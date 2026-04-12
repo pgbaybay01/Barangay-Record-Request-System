@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Admin sign-in · Barangay Mainit, Looc{% endblock %}
+{% block content %}
+<section class="card" style="max-width:420px;margin-inline:auto;">
+  <h2>Administrator sign-in</h2>
+  <p class="muted">
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Demo credentials are provided for local evaluation only.
+  </p>
+  <form method="post" action="{% url 'portal:admin_login' %}">
+    {% csrf_token %}
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+    </div>
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+      <a class="btn btn-secondary" href="{% url 'portal:home' %}">Back to home</a>
+    </div>
+  </form>
+  <p class="muted" style="margin-top:1rem;font-size:0.85rem;">
+    Demo username: <code>admin</code> · Demo password: <code>admin</code>
+  </p>
+</section>
+{% endblock %}

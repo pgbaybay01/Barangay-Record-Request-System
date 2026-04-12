@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Submit request · Barangay Mainit, Looc{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Document request form</h2>
+  <p class="muted">
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.
+  </p>
+  <form method="post" action="{% url 'portal:request_form' %}">
+    {% csrf_token %}
+    <div class="field">
+      <label for="document_type">Document type</label>
+      <select id="document_type" name="document_type" required>
+        <option value="">— Select —</option>
+        <option value="clearance" {% if posted.document_type == 'clearance' %}selected{% endif %}>Barangay Clearance</option>
+        <option value="health" {% if posted.document_type == 'health' %}selected{% endif %}>Health Certification</option>
+        <option value="indigency" {% if posted.document_type == 'indigency' %}selected{% endif %}>Certificate of Indigency</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="full_name">Full name</label>
+      <input type="text" id="full_name" name="full_name" required value="{{ posted.full_name|default:'' }}">
+    </div>
+    <div class="field">
+      <label for="address">Residential address</label>
+      <input type="text" id="address" name="address" value="{{ posted.address|default:'' }}" placeholder="Purok / Sitio / Street">
+    </div>
+    <div class="field">
+      <label for="contact">Contact number</label>
+      <input type="text" id="contact" name="contact" required value="{{ posted.contact|default:'' }}">
+    </div>
+    <div class="field" id="bhw_wrap" style="display:none;">
+      <label for="bhw_officer">BHW officer assigned</label>
+      <input type="text" id="bhw_officer" name="bhw_officer" value="{{ posted.bhw_officer|default:'' }}" placeholder="Name of Barangay Health Worker">
+    </div>
+    <div class="field">
+      <label for="purpose">Purpose / additional notes</label>
+      <textarea id="purpose" name="purpose" required>{{ posted.purpose|default:'' }}</textarea>
+    </div>
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">Submit request</button>
+      <a class="btn btn-secondary" href="{% url 'portal:home' %}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+  (function () {
+    var sel = document.getElementById('document_type');
+    var wrap = document.getElementById('bhw_wrap');
+    var bhw = document.getElementById('bhw_officer');
+    function sync() {
+      var on = sel.value === 'health';
+      wrap.style.display = on ? 'block' : 'none';
+      if (!on) { bhw.removeAttribute('required'); }
+      else { bhw.setAttribute('required', 'required'); }
+    }
+    sel.addEventListener('change', sync);
+    sync();
+  })();
+</script>
+{% endblock %}

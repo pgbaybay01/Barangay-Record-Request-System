@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Home · Barangay Mainit, Looc{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Welcome</h2>
+  <p class="muted">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    This portal lets residents of Barangay Mainit request barangay-issued documents online and check processing status using a reference number.
+  </p>
+  <p class="muted">
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+  </p>
+  <hr class="soft">
+  <p><strong>Available services (demo):</strong></p>
+  <ul class="muted">
+    <li>Barangay Clearance</li>
+    <li>Health Certification (with BHW assignment field)</li>
+    <li>Certificate of Indigency</li>
+  </ul>
+  <div class="actions">
+    <a class="btn btn-primary" href="{% url 'portal:request_form' %}">Start a request</a>
+    <a class="btn btn-secondary" href="{% url 'portal:tracker' %}">Track a request</a>
+  </div>
+</section>
+{% endblock %}

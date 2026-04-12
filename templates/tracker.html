@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Track status · Barangay Mainit, Looc{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Track request status</h2>
+  <p class="muted">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
+    Enter the reference number issued when you submitted your request.
+  </p>
+  <form method="post" action="{% url 'portal:tracker' %}">
+    {% csrf_token %}
+    <div class="field">
+      <label for="reference">Reference number</label>
+      <input type="text" id="reference" name="reference" value="{{ reference_query }}" placeholder="e.g. REF-AB12CD34" autocomplete="off">
+    </div>
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">Check status</button>
+    </div>
+  </form>
+</section>
+
+{% if result %}
+<section class="card" style="margin-top:1rem;">
+  <h2>Result</h2>
+  <table>
+    <tbody>
+      <tr><th>Reference</th><td><strong>{{ result.reference }}</strong></td></tr>
+      <tr><th>Document</th><td>{{ result.document_label }}</td></tr>
+      <tr><th>Status</th><td>{% include "_status_badge.html" with status=result.status %}</td></tr>
+      <tr><th>Submitted</th><td>{{ result.created_at }}</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="margin-top:1rem;">
+    Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit.
+  </p>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Barangay Mainit, Looc{% endblock %}</title>
+  <style>
+    :root {
+      --gov-blue-dark: #003366;
+      --gov-blue: #005ea2;
+      --gov-blue-light: #e8f2fb;
+      --ink: #1f2937;
+      --muted: #4b5563;
+      --line: #d7dee6;
+      --surface: #ffffff;
+      --page: #f4f6f8;
+      --danger: #9b1c1c;
+      --success: #1b5e20;
+      --warn: #7a5b00;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--page);
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: var(--gov-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .topbar {
+      background: linear-gradient(90deg, var(--gov-blue-dark), var(--gov-blue));
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 4px solid #ffc107;
+    }
+    .topbar h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .topbar p {
+      margin: 0.25rem 0 0;
+      font-size: 0.85rem;
+      opacity: 0.92;
+    }
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0.4rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1rem;
+      max-width: 960px;
+      margin-inline: auto;
+    }
+    nav a {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2.5rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.25rem 1.35rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    .card h2 {
+      margin-top: 0;
+      color: var(--gov-blue-dark);
+      font-size: 1.25rem;
+    }
+    .muted { color: var(--muted); font-size: 0.95rem; }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.88rem;
+      margin-bottom: 0.25rem;
+      color: var(--ink);
+    }
+    input[type="text"],
+    input[type="password"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.55rem 0.65rem;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      font: inherit;
+      background: #fff;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    .field { margin-bottom: 1rem; }
+    .actions { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    button,
+    .btn {
+      cursor: pointer;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      padding: 0.5rem 0.9rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      font-family: inherit;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: var(--gov-blue);
+      color: #fff;
+      border-color: #004b82;
+    }
+    .btn-primary:hover { filter: brightness(1.05); text-decoration: none; }
+    .btn-secondary {
+      background: #eef2f6;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+    .btn-danger {
+      background: #b91c1c;
+      color: #fff;
+      border-color: #7f1d1d;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--gov-blue);
+      border-color: var(--line);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.55rem;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: var(--gov-blue-light);
+      color: var(--gov-blue-dark);
+      font-weight: 700;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .badge-pending { background: #fff7e6; color: var(--warn); border: 1px solid #f5d78a; }
+    .badge-approved { background: #e8f5e9; color: var(--success); border: 1px solid #a5d6a7; }
+    .badge-rejected { background: #fdecea; color: var(--danger); border: 1px solid #f5b5b5; }
+    .badge-ready { background: #e3f2fd; color: #0d47a1; border: 1px solid #90caf9; }
+    .messages { list-style: none; padding: 0; margin: 0 0 1rem; }
+    .messages li {
+      padding: 0.55rem 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 0.35rem;
+      border: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+    .msg-success { background: #edf7ed; border-color: #c8e6c9; color: #1b5e20; }
+    .msg-error { background: #fdecea; border-color: #f5c6c6; color: #7f1d1d; }
+    .msg-warning { background: #fff8e1; border-color: #ffe082; color: #5d4037; }
+    .msg-info { background: #e8f2fb; border-color: #b6d4f0; color: #0d47a1; }
+    footer {
+      border-top: 1px solid var(--line);
+      background: #e9eef3;
+      color: var(--muted);
+      font-size: 0.82rem;
+      padding: 0.85rem 1.25rem;
+      text-align: center;
+    }
+    .stack { display: flex; flex-direction: column; gap: 0.35rem; }
+    .inline-forms form { display: inline; margin-right: 0.25rem; margin-bottom: 0.25rem; }
+    hr.soft { border: none; border-top: 1px solid var(--line); margin: 1.25rem 0; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <header class="topbar">
+    <h1>Barangay Mainit, Looc - Official Request Portal</h1>
+    <p>Municipality of Looc, Romblon · Citizen services (demo)</p>
+  </header>
+  <nav aria-label="Primary">
+    <ul>
+      <li><a href="{% url 'portal:home' %}">Home</a></li>
+      <li><a href="{% url 'portal:request_form' %}">Submit request</a></li>
+      <li><a href="{% url 'portal:tracker' %}">Track status</a></li>
+      <li><a href="{% url 'portal:admin_login' %}">Admin</a></li>
+    </ul>
+  </nav>
+  <main>
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="msg-{{ message.tags|default:'info' }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <strong>Developer's Note:</strong> Demo System - No Database - Local Only.
+  </footer>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

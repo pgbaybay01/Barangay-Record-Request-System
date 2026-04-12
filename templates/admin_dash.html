@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Admin dashboard · Barangay Mainit, Looc{% endblock %}
+{% block content %}
+<section class="card">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:0.75rem;">
+    <div>
+      <h2 style="margin-bottom:0.25rem;">Request dashboard</h2>
+      <p class="muted" style="margin:0;">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
+      </p>
+    </div>
+    <div class="stack" style="align-items:flex-end;">
+      <a class="btn btn-ghost" href="{% url 'portal:admin_logout' %}">Sign out</a>
+      <form method="post" action="{% url 'portal:admin_dash' %}" onsubmit="return confirm('Delete all demo records?');">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete_all">
+        <button type="submit" class="btn btn-danger">Delete all</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="card" style="margin-top:1rem;overflow-x:auto;">
+  {% if rows %}
+  <table>
+    <thead>
+      <tr>
+        <th>Ref</th>
+        <th>Document</th>
+        <th>Resident</th>
+        <th>Contact</th>
+        <th>BHW</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td><strong>{{ r.reference }}</strong></td>
+        <td>{{ r.document_label }}</td>
+        <td>
+          <div>{{ r.full_name }}</div>
+          <div class="muted" style="font-size:0.82rem;">{{ r.address }}</div>
+        </td>
+        <td>{{ r.contact }}</td>
+        <td>{% if r.document_type == 'health' %}{{ r.bhw_officer|default:"—" }}{% else %}—{% endif %}</td>
+        <td>{% include "_status_badge.html" with status=r.status %}</td>
+        <td class="inline-forms">
+          <form method="post" action="{% url 'portal:admin_dash' %}">
+            {% csrf_token %}
+            <input type="hidden" name="record_id" value="{{ r.id }}">
+            <input type="hidden" name="action" value="approve">
+            <button type="submit" class="btn btn-secondary">Approve</button>
+          </form>
+          <form method="post" action="{% url 'portal:admin_dash' %}">
+            {% csrf_token %}
+            <input type="hidden" name="record_id" value="{{ r.id }}">
+            <input type="hidden" name="action" value="reject">
+            <button type="submit" class="btn btn-danger">Reject</button>
+          </form>
+          <form method="post" action="{% url 'portal:admin_dash' %}">
+            {% csrf_token %}
+            <input type="hidden" name="record_id" value="{{ r.id }}">
+            <input type="hidden" name="action" value="ready">
+            <button type="submit" class="btn btn-primary">Set to ready</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No requests yet. Submit a test request from the public form.</p>
+  {% endif %}
+</section>
+{% endblock %}
